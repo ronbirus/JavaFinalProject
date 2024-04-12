@@ -1,4 +1,7 @@
-package org.example.assignment2;
+package org.example.finalproject;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,28 +9,32 @@ import java.util.List;
 /**
  * Class to represent an author
  */
+@Entity(name = "authors")
 public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int authorID;
     private String firstName;
     private String lastName;
-    private ArrayList<Book> books;
+
+    @ManyToMany (mappedBy = "authorList")
+    @JsonBackReference
+    private List<Book> books = new ArrayList<>();
 
     /**
-     * Constructor for an author
-     * @param authorID id of the author being created
-     * @param firstName first name of the author being created
-     * @param lastName last name of the author being created
+     * Sets author id
+     * @param authorID
      */
-    public Author(int authorID, String firstName, String lastName) {
+    public void setAuthorID(int authorID) {
         this.authorID = authorID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.books = new ArrayList<>();
     }
+
 
     /**
      * @return the authorID
      */
+
     public int getAuthorID() {
         return authorID;
     }
@@ -72,6 +79,14 @@ public class Author {
         return books;
     }
 
+    /**
+     * Sets books
+     * @param books
+     */
+    public void setBooks(List<Book> books) {
+        this.books = books;
+    }
+
     public String getAppendedBooks(List<Book> bookList) {
         StringBuilder bookNames = new StringBuilder();
         for(Book book: bookList) {
@@ -84,7 +99,7 @@ public class Author {
      * Adds a book to the author's list of books
      * @param book book to be added to the author's list of books
      */
-    public void addBook(Book book) {
-        books.add(book);
-    }
+//    public void addBook(Book book) {
+//        books.add(book);
+//    }
 }

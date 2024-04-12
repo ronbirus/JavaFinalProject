@@ -1,4 +1,6 @@
-package org.example.assignment2;
+package org.example.finalproject;
+
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,12 +8,20 @@ import java.util.List;
 /**
  * Class to represent a book
  */
+@Entity(name = "titles")
 public class Book {
+    @Id
     private String isbn;
     private String title;
     private int editionNumber;
     private String copyRight;
-    private ArrayList<Author> authors;
+
+    @ManyToMany
+    @JoinTable(
+            name = "author_isbn",
+            joinColumns = @JoinColumn(name = "isbn"),
+            inverseJoinColumns = @JoinColumn(name = "id"))
+    private List<Author> authorList = new ArrayList<>();
 
     /**
      * Constructor for a book
@@ -20,13 +30,6 @@ public class Book {
      * @param editionNumber edition number of the book being created
      * @param copyRight copy right of the book being created
      */
-    public Book(String isbn, String title, int editionNumber, String copyRight) {
-        this.isbn = isbn;
-        this.title = title;
-        this.editionNumber = editionNumber;
-        this.copyRight = copyRight;
-        this.authors = new ArrayList<>();
-    }
 
     /**
      * @return the isbn
@@ -92,8 +95,16 @@ public class Book {
     /**
      * @return the authors of the book
      */
-    public List<Author> getAuthors() {
-        return authors;
+    public List<Author> getAuthorList() {
+        return authorList;
+    }
+
+    /**
+     * Sets the authors
+     * @param authors
+     */
+    public void setAuthorList(List<Author> authors) {
+        this.authorList = authors;
     }
 
     /**
@@ -113,8 +124,8 @@ public class Book {
      * Adds an author to the book
      * @param author author to be added to the book
      */
-    public void addAuthor(Author author) {
-        authors.add(author);
-    }
+//    public void addAuthor(Author author) {
+//        authors.add(author);
+//    }
 }
 
